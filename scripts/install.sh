@@ -45,14 +45,22 @@ fi
 
 SVXLINK_REPO=${1:-"https://github.com/sm0svx/svxlink.git"}
 
-# Clone and compile SvxLink
+# Compile and install SvxLink
 if ! command -v svxlink &> /dev/null; then
-  echo -e "${GREEN}[3/6] SvxLink not found. Cloning and building from ${SVXLINK_REPO}...${NC}"
-  BUILD_DIR="/tmp/svxlink-build"
-  rm -rf "$BUILD_DIR"
-  git clone --depth 1 "$SVXLINK_REPO" "$BUILD_DIR"
-  mkdir -p "$BUILD_DIR/src/build"
-  cd "$BUILD_DIR/src/build"
+  echo -e "${GREEN}[3/6] SvxLink not found. Compiling SvxLink core...${NC}"
+  if [ -d "$INSTALL_DIR/core/src" ]; then
+    echo -e "${CYAN}Using local core/src from NinjaSVX repository...${NC}"
+    BUILD_SRC="$INSTALL_DIR/core/src"
+  else
+    echo -e "${CYAN}Cloning from ${SVXLINK_REPO}...${NC}"
+    BUILD_DIR="/tmp/svxlink-build"
+    rm -rf "$BUILD_DIR"
+    git clone --depth 1 "$SVXLINK_REPO" "$BUILD_DIR"
+    BUILD_SRC="$BUILD_DIR/src"
+  fi
+
+  mkdir -p "$BUILD_SRC/build"
+  cd "$BUILD_SRC/build"
 
   cmake -DUSE_QT=OFF \
         -DCMAKE_INSTALL_PREFIX=/usr \

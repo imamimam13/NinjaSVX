@@ -43,12 +43,14 @@ else
   echo -e "${CYAN}[2/6] Node.js is already installed: $(node -v)${NC}"
 fi
 
-# Clone and compile SvxLink from sm0svx/svxlink if not installed
+SVXLINK_REPO=${1:-"https://github.com/sm0svx/svxlink.git"}
+
+# Clone and compile SvxLink
 if ! command -v svxlink &> /dev/null; then
-  echo -e "${GREEN}[3/6] SvxLink not found. Cloning and building from github.com/sm0svx/svxlink...${NC}"
+  echo -e "${GREEN}[3/6] SvxLink not found. Cloning and building from ${SVXLINK_REPO}...${NC}"
   BUILD_DIR="/tmp/svxlink-build"
   rm -rf "$BUILD_DIR"
-  git clone --depth 1 https://github.com/sm0svx/svxlink.git "$BUILD_DIR"
+  git clone --depth 1 "$SVXLINK_REPO" "$BUILD_DIR"
   mkdir -p "$BUILD_DIR/src/build"
   cd "$BUILD_DIR/src/build"
 

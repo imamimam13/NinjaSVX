@@ -1,0 +1,23 @@
+{
+  "name": "ninjasvx",
+  "version": "1.0.0",
+  "description": "NinjaSVX - Tactical Web Controller for SvxLink",
+  "scripts": {
+    "install:all": "npm --prefix backend install && npm --prefix frontend install",
+    "build": "npm --prefix frontend run build",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "start": "npm --prefix backend start"
+  },
+  "keywords": [
+    "svxlink",
+    "hamradio",
+    "echolink",
+    "svxreflector",
+    "repeater",
+    "raspberry-pi",
+    "tactical-ui"
+  ],
+  "author": "NinjaSVX Team",
+  "license": "GPL-2.0"
+}

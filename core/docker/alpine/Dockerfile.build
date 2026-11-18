@@ -1,0 +1,29 @@
+FROM alpine AS development
+MAINTAINER Tobias Blomberg <sm0svx@svxlink.org>
+
+# Install required packages and set up the svxlink user
+RUN apk update
+RUN apk add git cmake make g++ pkgconfig doxygen groff \
+            libsigc++-dev alsa-lib-dev opus-dev \
+            speex-dev popt-dev libgcrypt-dev tcl-dev curl-dev gsm-dev \
+            linux-headers jsoncpp-dev librtlsdr-dev libogg-dev libgpiod-dev \
+            ladspa-dev lmms-plugins-ladspa \
+            doxygen groff curl openssh alsa-utils \
+            samurai vim gdb valgrind
+
+# Softlink LADSPA plugins from package lmms-plugins-ladsp into /usr/lib/ladspa
+RUN mkdir -p /usr/lib/ladspa && \
+    cd /usr/lib/ladspa && \
+    cp -s ../lmms/ladspa/* .
+
+# Sound files
+ADD svxlink-sounds-en_US-heather-16k-24.02.tar.bz2 /usr/share/svxlink/sounds/
+RUN ln -s en_US-heather-16k /usr/share/svxlink/sounds/en_US
+ADD svxlink-sounds-sv_SE-elin-16k-19.09.99.4.tar.bz2 /usr/share/svxlink/sounds/
+RUN ln -s sv_SE-elin-16k /usr/share/svxlink/sounds/sv_SE
+
+# Add an entrypoint to use for debugging and development
+ADD entrypoint /
+ENTRYPOINT ["/entrypoint"]
+
+# vim: set filetype=dockerfile:
